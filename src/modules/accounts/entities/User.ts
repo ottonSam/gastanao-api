@@ -28,7 +28,7 @@ class User {
     updated_at: Date;
 
     @CreateDateColumn()
-    deleted_at?: Date;
+    excluded_at?: Date;
 
     constructor() {
         if (!this.id) {
