@@ -37,7 +37,7 @@ class User {
         this.name = "";
         this.password = "";
         this.email = "";
-        this.active = false;
+        this.active = true;
     }
 }
 
