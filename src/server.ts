@@ -2,6 +2,10 @@ import "reflect-metadata";
 import express, {Request, Response, NextFunction } from "express";
 import "express-async-errors";
 
+import "./database";
+
+import "./shared/container"
+
 import { AppError } from "./errors/AppError";
 import { router } from "./routes";
 
