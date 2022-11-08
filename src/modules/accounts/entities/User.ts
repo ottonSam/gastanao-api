@@ -1,5 +1,6 @@
 import { v4 as uuidV4 } from "uuid";
-import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Category } from "../../categories/entities/Category";
 
 @Entity("users")
 class User {
@@ -20,6 +21,9 @@ class User {
 
     @Column()
     avatar?: string;
+
+    @OneToMany(() => Category, (category) => category.id)
+    categories?: Category[];
 
     @CreateDateColumn()
     created_at?: Date;
