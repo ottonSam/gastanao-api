@@ -1,6 +1,7 @@
 package br.com.ottonsam.gastanaoapi.controller;
 
 import br.com.ottonsam.gastanaoapi.entity.User;
+import br.com.ottonsam.gastanaoapi.entity.dtos.ResponseUserDto;
 import br.com.ottonsam.gastanaoapi.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +19,8 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<User> create(@RequestBody User user) {
-        return ResponseEntity.ok(userService.create(user));
+    public ResponseEntity<ResponseUserDto> create(@RequestBody User user) {
+        return ResponseEntity.ok(new ResponseUserDto(userService.create(user)));
     }
 
 }

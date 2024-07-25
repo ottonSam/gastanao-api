@@ -2,7 +2,6 @@ package br.com.ottonsam.gastanaoapi.service;
 
 import br.com.ottonsam.gastanaoapi.entity.User;
 import br.com.ottonsam.gastanaoapi.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
