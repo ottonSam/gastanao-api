@@ -40,4 +40,12 @@ public class CategoryController {
 
         return category.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> deleteCategory(@PathVariable("id") UUID id, JwtAuthenticationToken token) {
+        if (categoryService.deleteCategory(id, token)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

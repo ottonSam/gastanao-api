@@ -7,6 +7,7 @@ import br.com.ottonsam.gastanaoapi.entity.dtos.ResponseCategoryDto;
 import br.com.ottonsam.gastanaoapi.repository.CategoryRepository;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +24,14 @@ public class CategoryService {
         this.userService = userService;
     }
 
-    public ResponseCategoryDto createCategory(CreateCategoryDto categoryDto, JwtAuthenticationToken token) {
+    private Optional<User> getUserData(JwtAuthenticationToken token) {
         Optional<User> user = Optional.ofNullable(userService.findByUsername(token.getName()));
+        Assert.notNull(user, "User not found");
+        return user;
+    }
+
+    public ResponseCategoryDto createCategory(CreateCategoryDto categoryDto, JwtAuthenticationToken token) {
+        Optional<User> user = getUserData(token);
         if (user.isPresent()) {
             Category category = new Category(categoryDto, user.get());
             categoryRepository.save(category);
@@ -52,8 +59,9 @@ public class CategoryService {
 
             Optional<User> user = Optional.ofNullable(userService.findByUsername(token.getName()));
             if (user.isPresent()) {
+                Assert.isTrue(categoryToUpdate.getUser().equals(user.get()), "This category does not belong to the user");
                 if (categoryToUpdate.getUser().equals(user.get())) {
-                    categoryToUpdate.setDescription(categoryToUpdate.getDescription());
+                    categoryToUpdate.setDescription(categoryDto.description());
                     categoryRepository.save(categoryToUpdate);
 
                     return new ResponseCategoryDto(categoryToUpdate);
@@ -62,5 +70,20 @@ public class CategoryService {
         }
 
         return null;
+    }
+
+    public Boolean deleteCategory(UUID id, JwtAuthenticationToken token) {
+        Optional<Category> category = categoryRepository.findById(id);
+        if (category.isPresent()) {
+            Optional<User> user = Optional.ofNullable(userService.findByUsername(token.getName()));
+            if (user.isPresent()) {
+                Assert.isTrue(category.get().getUser().equals(user.get()), "This category does not belong to the user");
+                if (category.get().getUser().equals(user.get())) {
+                    categoryRepository.delete(category.get());
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
