@@ -61,7 +61,7 @@ public class TransactionService {
 
     public List<ResponseTransactionDto> listAllTransactionsByCategory(JwtAuthenticationToken token, UUID categoryId) {
         Category category = getCategoryData(token, categoryId);
-        List<Transaction> transactions = transactionRepository.findByCategory(category.getId());
+        List<Transaction> transactions = transactionRepository.findByCategory(category);
         return transactions.stream().map(ResponseTransactionDto::new).toList();
     }
 
