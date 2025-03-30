@@ -1,5 +1,6 @@
 package br.com.ottonsam.gastanaoapi.entity;
 
+import br.com.ottonsam.gastanaoapi.entity.dtos.CreateTransactionDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,4 +36,13 @@ public class Transaction {
 
     @Enumerated(EnumType.STRING)
     private TransactionType type;
+
+    public Transaction(CreateTransactionDto createTransactionDto, User user, Category category) {
+        this.user = user;
+        this.category = category;
+        this.amount = createTransactionDto.amount();
+        this.description = createTransactionDto.description();
+        this.date = LocalDate.now();
+        this.type = createTransactionDto.type();
+    }
 }

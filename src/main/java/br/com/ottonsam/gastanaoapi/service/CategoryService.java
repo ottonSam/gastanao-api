@@ -31,6 +31,10 @@ public class CategoryService {
         throw new IllegalArgumentException("user not found");
     }
 
+    public Optional<Category> findById(UUID id) {
+        return categoryRepository.findById(id);
+    }
+
     public ResponseCategoryDto createCategory(CreateCategoryDto categoryDto, JwtAuthenticationToken token) {
         User user = getUserData(token);
         Category category = new Category(categoryDto, user);

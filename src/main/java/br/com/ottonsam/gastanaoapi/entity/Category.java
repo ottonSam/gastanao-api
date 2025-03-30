@@ -27,8 +27,8 @@ public class Category {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Category(CreateCategoryDto expenseDto, User user) {
-        this.description = expenseDto.description();
+    public Category(CreateCategoryDto categoryDto, User user) {
+        this.description = categoryDto.description();
         this.user = user;
     }
 }
