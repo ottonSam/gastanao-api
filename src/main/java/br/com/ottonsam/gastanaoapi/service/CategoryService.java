@@ -23,20 +23,24 @@ public class CategoryService {
         this.userService = userService;
     }
 
-    private User getUserData(JwtAuthenticationToken token) {
-        Optional<User> user = Optional.ofNullable(userService.findByUsername(token.getName()));
-        if (user.isPresent()) {
-            return user.get();
-        }
-        throw new IllegalArgumentException("user not found");
-    }
-
     public Optional<Category> findById(UUID id) {
         return categoryRepository.findById(id);
     }
 
+    public Category getCategoryData(JwtAuthenticationToken token, UUID categoryId) {
+        Optional<Category> category = findById(categoryId);
+        if (category.isPresent()) {
+            User user = userService.findByUsername(token.getName());
+            if (category.get().getUser().equals(user)) {
+                return category.get();
+            }
+            throw new IllegalArgumentException("This category does not belong to the user");
+        }
+        throw new IllegalArgumentException("Category not found");
+    }
+
     public ResponseCategoryDto createCategory(CreateCategoryDto categoryDto, JwtAuthenticationToken token) {
-        User user = getUserData(token);
+        User user = userService.findByUsername(token.getName());
         Category category = new Category(categoryDto, user);
         categoryRepository.save(category);
         return new ResponseCategoryDto(category);

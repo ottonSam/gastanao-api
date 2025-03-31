@@ -24,14 +24,14 @@ public class TransactionController {
     ResponseEntity<List<ResponseTransactionDto>> getAllTransactions(JwtAuthenticationToken token) {
         List<ResponseTransactionDto> transactions = transactionService.listAllTransactions(token);
 
-        return transactions.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(transactions);
+        return ResponseEntity.ok(transactions);
     }
 
     @GetMapping("/{categoryId}")
     ResponseEntity<List<ResponseTransactionDto>> getTransactionsByCategory(JwtAuthenticationToken token, @PathVariable("categoryId") UUID categoryId) {
         List<ResponseTransactionDto> transactions = transactionService.listAllTransactionsByCategory(token, categoryId);
 
-        return transactions.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(transactions);
+        return ResponseEntity.ok(transactions);
     }
 
     @PostMapping
